@@ -90,7 +90,7 @@ async def addTechnicalSkills(body: dict):
             "technical3": technical3, 
             "userId": userId
         }).execute()
-        return {"message": "Career added successfully"}
+        return {"message": "Career added successfully", "data": data}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error adding Technical Skill")
@@ -102,7 +102,7 @@ async def updatehighestEducationLevel(body: dict):
         highestEducationLevel = body['highestEducationLevel']
         who_are_you = body['who_are_you']
         data, count = supabase.table('profiles').update({"highestEducationLevel": highestEducationLevel, "who_are_you": who_are_you}).eq('user_id',userId).execute()
-        return {"message": "Updated highestEducationLevel successfully","Data": data}
+        return {"message": "Updated highestEducationLevel successfully","data": data}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error updating user's highestEducationLevel")
@@ -119,7 +119,7 @@ async def addSoftskill(body: dict):
             "softskill3": softskill3,
             "userId": userId
         }).execute()
-        return {"message": "Added softskill successfully", "Data": data}
+        return {"message": "Added softskill successfully", "data": data}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error in Adding Soft Skill")
@@ -137,7 +137,7 @@ async def addCareer(body: dict):
             "career3": career3, 
             "userId": userId
         }).execute()
-        return {"message": "Career added successfully","Data": data}
+        return {"message": "Career added successfully","data": data}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error adding career")
