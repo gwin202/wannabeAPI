@@ -75,8 +75,21 @@ async def api(user_input: database.UserInput):
         raise HTTPException(status_code=500, detail="Error communicating with Groq Api")
     
 @app.post('/get_user_details')
-async def get_user_details(data: database.TokenData):
-    pass
+async def get_user_details(body: dict):
+    try:
+        jwt = body['accessToken']
+        data = supabase.auth.get_user(jwt)
+        user_data = {
+            "id": data.user.id,
+            "avatar_url": data.user.user_metadata['avatar_url'],
+            "email": data.user.user_metadata['email'],
+            "full_name": data.user.user_metadata['full_name']
+        }
+        return {"message": "Got user details Successfully", "data": user_data}
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Error in getting user details")
+    
 @app.post('/addtechnicalSkills')
 async def addTechnicalSkills(body: dict):
     try:
