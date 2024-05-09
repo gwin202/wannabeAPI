@@ -23,13 +23,6 @@ url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_ANON_KEY")
 supabase = create_client(url, key)
 
-# # List available models
-# models = client.models.list()
-
-# for model in models:
-#     print(model.id, '-',)
-
-# Define a request model using Pydantic
 
 @app.post('/prompt')
 async def prompt(user_input: database.UserInput):
@@ -85,13 +78,17 @@ async def api(user_input: database.UserInput):
 async def get_user_details(data: database.TokenData):
     pass
 @app.post('/addtechnicalSkills')
-async def addTechnicalSkills(technicalSkills: database.TechnicalSkills):
+async def addTechnicalSkills(body: dict):
     try:
-        data, count = await supabase.table('technicalSkills').insert({
-            "technical1": technicalSkills.technical1, 
-            "technical2": technicalSkills.technical2,
-            "technical3": technicalSkills.technical3, 
-            "user_id": technicalSkills.userId
+        technical1 = body["technical1"]
+        technical2 = body["technical2"]
+        technical3  = body["technical3"]
+        userId = body["userId"]
+        data, count = supabase.table('technicalSkills').insert({
+            "technical1": technical1, 
+            "technical2": technical2,
+            "technical3": technical3, 
+            "userId": userId
         }).execute()
         return {"message": "Career added successfully"}
     except Exception as e:
@@ -101,39 +98,46 @@ async def addTechnicalSkills(technicalSkills: database.TechnicalSkills):
 @app.post('/update_EducationLevel')
 async def updatehighestEducationLevel(body: dict):
     try:
-        userId = body['user_id']
+        userId = body['userId']
         highestEducationLevel = body['highestEducationLevel']
         who_are_you = body['who_are_you']
         data, count = supabase.table('profiles').update({"highestEducationLevel": highestEducationLevel, "who_are_you": who_are_you}).eq('user_id',userId).execute()
-        print(data,count)
-        return {"message": "Updated highestEducationLevel successfully"}
+        return {"message": "Updated highestEducationLevel successfully","Data": data}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error updating user's highestEducationLevel")
 @app.post('/addSoftskill')
-async def addSoftskill(userinput: database.Skill):
+async def addSoftskill(body: dict):
     try:
-        data, count = supabase.table('profiles').insert({
-            "softskill1": userinput.softskill1,
-            "softskill2": userinput.softskill2,
-            "softskill3": userinput.softskill3,
-            "userId": userinput.userId
-        })
-        return {"message": "Added softskill successfully"}
+        userId = body['userId']
+        softskill1= body['softskill1']
+        softskill2= body['softskill2']
+        softskill3= body['softskill3']
+        data, count = supabase.table('softskills').insert({
+            "softskill1": softskill1,
+            "softskill2": softskill2,
+            "softskill3": softskill3,
+            "userId": userId
+        }).execute()
+        return {"message": "Added softskill successfully", "Data": data}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error in Adding Soft Skill")
     
 @app.post('/addcareer')
-async def addCareer(addcareer: database.Career):
+async def addCareer(body: dict):
     try:
-        data, count = supabase.table('career').insert({
-            "career1": addcareer.career1, 
-            "career2": addcareer.career2,
-            "career3": addcareer.career3, 
-            "user_id": addcareer.userId
+        career1 = body['career1']
+        career2 = body['career2']
+        career3 = body['career3']
+        userId= body['userId']
+        data, count = supabase.table('careers').insert({
+            "career1": career1, 
+            "career2": career2,
+            "career3": career3, 
+            "userId": userId
         }).execute()
-        return {"message": "Career added successfully"+data}
+        return {"message": "Career added successfully","Data": data}
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error adding career")
