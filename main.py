@@ -91,7 +91,7 @@ async def addProfile(body: dict):
         email = body['email']
         photoURL = body['photo_url']
         data, count = supabase.table('profiles').insert({
-            "user_id": userId, 
+            "userId": userId, 
             "displayName": name,
             "email": email,
             "photoURL": photoURL, 
