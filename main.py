@@ -7,7 +7,7 @@ from openai import OpenAI
 import os
 from supabase import create_client
 import database
-
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
@@ -23,6 +23,15 @@ url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_ANON_KEY")
 supabase = create_client(url, key)
 
+
+# Allow requests from http://localhost:8081
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:8081"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST"],
+    allow_headers=["*"],
+)
 
 @app.post('/prompt')
 async def prompt(user_input: database.UserInput):
@@ -73,6 +82,27 @@ async def api(user_input: database.UserInput):
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error communicating with Groq Api")
+    
+@app.post('/addProfile')
+async def addProfile(body: dict):
+    try:
+        userId = body['user_id']
+        name = body['name']
+        email = body['email']
+        photoURL = body['photo_url']
+        data, count = supabase.table('profiles').insert({
+            "user_id": userId, 
+            "displayName": name,
+            "email": email,
+            "photoURL": photoURL, 
+            "userId": userId
+        }).execute()
+        return {"message": "User created successfully", "data": data, "count": count}
+    
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Error creating user")
+        
     
 @app.post('/get_user_details')
 async def get_user_details(body: dict):
