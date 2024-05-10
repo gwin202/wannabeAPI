@@ -144,7 +144,7 @@ async def updatehighestEducationLevel(body: dict):
         userId = body['userId']
         highestEducationLevel = body['highestEducationLevel']
         who_are_you = body['who_are_you']
-        data, count = supabase.table('profiles').update({"highestEducationLevel": highestEducationLevel, "who_are_you": who_are_you}).eq('user_id',userId).execute()
+        data, count = supabase.table('profiles').update({"highestEducationLevel": highestEducationLevel, "who_are_you": who_are_you}).eq('userId',userId).execute()
         return {"message": "Updated highestEducationLevel successfully","data": data}
     except Exception as e:
         print(e)
