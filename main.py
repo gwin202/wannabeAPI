@@ -63,6 +63,8 @@ Considering the diverse array of courses available, including Medicine and Surge
 , I'm eager to discover the path that aligns best with my unique blend of talents and aspirations. I'm not just seeking a career, but one that leverages my strengths, embraces my interests, and makes a meaningful impact on the world.
 
 Thus, I seek your guidance, Llama, to unveil the top three courses that resonate with my skills and passions. While considering my initial career preferences, I trust your insights to navigate through the landscape of possibilities and lead me towards the most fulfilling opportunities. Your recommendations from the provided list of courses will illuminate the path where my talents flourish, my interests thrive, and my future holds its brightest promise.
+
+In 150 words only.
     
     """
     
