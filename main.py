@@ -57,14 +57,12 @@ async def prompt(user_input: database.UserInput):
 @app.post('/api')
 async def api(user_input: database.UserInput):
     # Construct the prompt based on the provided data
-    prompt_text = f"""{user_input.username}, a professional with a vibrant mind and a passion for {user_input.task_activities}, seeks your guidance. Equipped with strong soft skills like {user_input.softskill1}, {user_input.softskill2}, and {user_input.softskill3}, enjoys applying these technical skills in {user_input.technical1}, {user_input.technical2}, and {user_input.technical3}. While my heart dances between the noble calling of {user_input.career1}, the captivating world of {user_input.career2}, and the intricacies of {user_input.career3} hold equal allure.
-    From the diverse landscape of courses available, Medicine and Surgery, Law, Civil Engineering, Mechanical Engineering, Electrical Engineering, Computer Science, Information Technology, Business Administration, Accounting, Nursing and Nursing Science, Agriculture, Mass Communication, Environmental Science, Education, and Pharmacy stand as potential pathways.
+    prompt_text = f"""Dear llama, I'm {user_input.username}, an individual with a passion for {user_input.task_activities}. My mind thrives on challenges, seeking to apply my strong soft skills in {user_input.softskill1}, {user_input.softskill2}, and {user_input.softskill3} across technical domains like {user_input.technical1}, {user_input.technical2}, and {user_input.technical3}. While I'm drawn to the noble calling of {user_input.career1}, I'm equally intrigued by {user_input.career2} and {user_input.career3}.
 
-    Yet, the path that truly suits me needs to resonate with my unique blend of talents and aspirations. I seek not just a fulfilling career, but one that leverages his strengths, embraces my interests, and makes a meaningful impact on the world.
+Considering the diverse array of courses available, including Medicine and Surgery, Law, Civil Engineering, Mechanical Engineering, Electrical Engineering, Computer Science, Information Technology, Business Administration, Accounting, Nursing and Nursing Science, Agriculture, Mass Communication, Environmental Science, Education, and Pharmacy
+, I'm eager to discover the path that aligns best with my unique blend of talents and aspirations. I'm not just seeking a career, but one that leverages my strengths, embraces my interests, and makes a meaningful impact on the world.
 
-    Therefore, I turn to you, ChatGPT, to unveil the one courses that shine brightest for me. Guide me, not just by the compass of his initial choices, but by the map of real-life data. Lead us to where these skills find fertile ground, where my interests blossom, and where his future holds its most fulfilling promise.
-
-    Remember, to give recommendations from the list of courses given.
+Thus, I seek your guidance, Llama, to unveil the top three courses that resonate with my skills and passions. While considering my initial career preferences, I trust your insights to navigate through the landscape of possibilities and lead me towards the most fulfilling opportunities. Your recommendations from the provided list of courses will illuminate the path where my talents flourish, my interests thrive, and my future holds its brightest promise.
     
     """
     
@@ -149,6 +147,17 @@ async def updatehighestEducationLevel(body: dict):
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error updating user's highestEducationLevel")
+    
+@app.post("/updateActivities")
+async def updateActivities(body: dict):
+    try:
+        userId = body['userId']
+        activities = body['activities']
+        data, count = supabase.table('profiles').update({"activities": activities}).eq('userId',userId).execute()
+        return {"message": "Updated Activities successfully"}
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Error updating user's Activities")
 @app.post('/addSoftskill')
 async def addSoftskill(body: dict):
     try:
