@@ -2,7 +2,7 @@ version: '3'
 services:
 
     wannabe_api:
-        image: wannabe_api
+        image: ngulube/wannabe_api:v1.0.0-beta-01
         restart: always
         environment:
           SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
