@@ -1,0 +1,13 @@
+version: '3'
+services:
+
+    wannabe_api:
+        image: wannabe_api
+        restart: always
+        environment:
+          SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+          SUPABASE_URL: ${SUPABASE_URL}
+          API_KEY: ${API_KEY}
+          GROQ_API_KEY: ${GROQ_API_KEY}
+        ports:
+          - "8003:8003"
