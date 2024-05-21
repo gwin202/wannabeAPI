@@ -27,7 +27,7 @@ supabase = create_client(url, key)
 # Allow requests from http://localhost:8081
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8081"],
+    allow_origins=["http://localhost:8081", os.environ.get("ALLOW_ORIGIN")],
     allow_credentials=True,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
@@ -122,7 +122,10 @@ async def get_user_details(body: dict):
 @app.get('/get_user_info')
 async def get_user_info(body: dict):
     try:
-        userId = 'userId'
+        userId = body["userId"]
+        response, count = supabase.table('profiles').select('*, careers(*), softskills(*),technicalSkills(*)').eq('id',userId).execute()
+        
+        return {"data": response}
         
     except Exception as e:
         print(e)
