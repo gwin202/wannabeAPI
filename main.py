@@ -91,11 +91,10 @@ async def addProfile(body: dict):
         email = body['email']
         photoURL = body['photo_url']
         data, count = supabase.table('profiles').insert({
-            "userId": userId, 
+            "id": userId, 
             "displayName": name,
             "email": email,
-            "photoURL": photoURL, 
-            "userId": userId
+            "photoURL": photoURL
         }).execute()
         return {"message": "User created successfully", "data": data, "count": count}
     
@@ -119,7 +118,14 @@ async def get_user_details(body: dict):
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Error in getting user details")
-    
+
+@app.get('/get_user_info')
+async def get_user_info(body: dict):
+    try:
+        userId = 'userId'
+        
+    except Exception as e:
+        print(e)
 @app.post('/addtechnicalSkills')
 async def addTechnicalSkills(body: dict):
     try:
@@ -144,7 +150,7 @@ async def updatehighestEducationLevel(body: dict):
         userId = body['userId']
         highestEducationLevel = body['highestEducationLevel']
         who_are_you = body['who_are_you']
-        data, count = supabase.table('profiles').update({"highestEducationLevel": highestEducationLevel, "who_are_you": who_are_you}).eq('userId',userId).execute()
+        data, count = supabase.table('profiles').update({"highestEducationLevel": highestEducationLevel, "who_are_you": who_are_you}).eq('id',userId).execute()
         return {"message": "Updated highestEducationLevel successfully","data": data}
     except Exception as e:
         print(e)
@@ -155,7 +161,7 @@ async def updateActivities(body: dict):
     try:
         userId = body['userId']
         activities = body['activities']
-        data, count = supabase.table('profiles').update({"activities": activities}).eq('userId',userId).execute()
+        data, count = supabase.table('profiles').update({"activities": activities}).eq('id',userId).execute()
         return {"message": "Updated Activities successfully"}
     except Exception as e:
         print(e)
