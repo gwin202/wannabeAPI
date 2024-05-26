@@ -36,13 +36,46 @@ app.add_middleware(
 @app.post('/prompt')
 async def api(body: database.UserInput):
     try:
-        prompt_text = f"""Dear llama, I'm {body.username}, an individual with a passion for {body.task_activities}. My mind thrives on challenges, seeking to apply my strong soft skills in {body.softskill1}, {body.softskill2}, and {body.softskill3} across technical domains like {body.technical1}, {body.technical2}, and {body.technical3}. While I'm drawn to the noble calling of {body.career1}, I'm equally intrigued by {body.career2} and {body.career3}.
+        prompt_text = f"""
+        Generate personalized career choice recommendations strictly from the following list of courses:
 
-Considering the diverse array of courses available, including Medicine and Surgery, Law, Civil Engineering, Mechanical Engineering, Electrical Engineering, Computer Science, Information Technology, Business Administration, Accounting, Nursing and Nursing Science, Agriculture, Mass Communication, Environmental Science, Education, and Pharmacy, I'm eager to discover the path that aligns best with my unique blend of talents and aspirations. I'm not just seeking a career, but one that leverages my strengths, embraces my interests, and makes a meaningful impact on the world.
+ 1.⁠ ⁠Medicine and Surgery
+ 2.⁠ ⁠Law
+ 3.⁠ ⁠Civil Engineering
+ 4.⁠ ⁠Mechanical Engineering
+ 5.⁠ ⁠Electrical Engineering
+ 6.⁠ ⁠Computer Science
+ 7.⁠ ⁠Information Technology
+ 8.⁠ ⁠Business Administration
+ 9.⁠ ⁠Accounting
+10.⁠ ⁠Nursing and Nursing Science
+11.⁠ ⁠Agriculture
+12.⁠ ⁠Mass Communication
+13.⁠ ⁠Environmental Science
+14.⁠ ⁠Education
+15.⁠ ⁠Pharmacy
 
-Thus, I seek your guidance, Llama, to unveil the top three courses that resonate with my skills and passions. While considering my initial career preferences, I trust your insights to navigate through the landscape of possibilities and lead me towards the most fulfilling opportunities. Your recommendations from the provided list of courses will illuminate the path where my talents flourish, my interests thrive, and my future holds its brightest promise.
+Consider the user's favourite tasks, soft skills, and technical skills to provide the most suitable recommendations. The user details are as follows:
 
-In 150 words only.
+Username: {body.username}
+Favorite Tasks/Activities:  {body.task_activities}
+
+Soft Skills:
+  1. {body.softskill1}
+  2. {body.softskill2}
+  3. {body.softskill3}
+
+Technical Skills:
+  1.  {body.technical1}
+  2. {body.technical2}
+  3. {body.technical3}
+
+Career choices:
+ 1.⁠ ⁠{body.career1}
+ 2.⁠ ⁠{body.career2}
+ 3.⁠ ⁠{body.career3}
+
+Please analyze this information and recommend the top three most suitable courses from the given list. Additionally, provide a brief explanation for each recommendation, detailing why it aligns well with the username preferences and skills in 150 words only.
         """
     except Exception as e:
          print(e)
@@ -115,6 +148,7 @@ async def get_descrip(body: dict):
     # Construct the prompt based on the provided data
     prompt_text = f"""
      write a brief description of the {body["career_name"]} course, highlighting its main focus and career paths.
+     In not more than 100 words
     """
     
     try:
@@ -136,6 +170,7 @@ async def get_scope(body: dict):
     # Construct the prompt based on the provided data
     prompt_text = f"""
      What are the job prospects and scope of the {body["career_name"]} field in Nigeria, and what industries can graduates work in?
+     In not more than 100 words
     """
     
     try:
@@ -157,6 +192,7 @@ async def get_steps(body: dict):
     # Construct the prompt based on the provided data
     prompt_text = f"""
     Outline the step-by-step process of pursuing a career in {body["career_name"]}, from education to professional certification.
+    In not more than 100 words
 
     """
     
@@ -179,6 +215,7 @@ async def get_top_uni(body: dict):
     # Construct the prompt based on the provided data
     prompt_text = f"""
    List the top universities in Nigeria that offer {body["career_name"]} courses, including their location and program duration.
+   In not more than 100 words
 
     """
     
@@ -200,8 +237,8 @@ async def get_top_uni(body: dict):
 async def get_salary(body: dict):
     # Construct the prompt based on the provided data
     prompt_text = f"""
-   What is the average salary range per annum for {body["career_name"]} professionals in Nigeria, and how does experience affect salary?
-
+   What is the average salary range per annum for {body["career_name"]} professionals in Nigeria, and how does experience affect salary? 
+   In not more than 100 words
 
     """
     
@@ -225,6 +262,7 @@ async def get_top_skills(body: dict):
     # Construct the prompt based on the provided data
     prompt_text = f"""
         What are the essential skills required to succeed in the {body["career_name"]} field, and how can they be developed?
+        In not more than 100 words
 
     """
     
@@ -248,6 +286,7 @@ async def get_work_life(body: dict):
     # Construct the prompt based on the provided data
     prompt_text = f"""
     What is the typical work-life balance like for {body["career_name"]} professionals, and how can they maintain a healthy balance between work and personal life?
+    In not more than 100 words
     """
     
     try:
